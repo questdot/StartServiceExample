@@ -5,24 +5,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button btnStart,btnStop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService(new Intent(this,MyService.class));
-       // isMyServiceRunning(MyService.class);
+        btnStart=(Button)findViewById(R.id.btnStart);
+        btnStop=(Button)findViewById(R.id.btnStop);
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(MainActivity.this,MyService.class));
+            }
+        });
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(new Intent(MainActivity.this,MyService.class));
+            }
+        });
+
     }
 
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //this method is to stop the service, the service will not be destroy if stopservice method not been called.
-       // stopService(new Intent(this,MyService.class));
-    }
 }

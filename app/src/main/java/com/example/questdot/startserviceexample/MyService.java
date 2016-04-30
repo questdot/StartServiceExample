@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class MyService extends Service {
+    public Thread thread = new Thread();
+
     public MyService() {
     }
 
@@ -15,16 +17,31 @@ public class MyService extends Service {
     }
 
     @Override
-    public void onCreate(){
-        super.onCreate();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
 
-        System.out.println("Service started");
+
+                while (!thread.isInterrupted()) {
+                    System.out.println("Services runing..."+thread);
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        };
+
+        thread.start();
+
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
 
-        System.out.println("Service destroy");
-    }
 }
